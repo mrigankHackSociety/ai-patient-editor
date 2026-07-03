@@ -29,9 +29,9 @@ export const menuConfig: MenuConfig = {
   ],
   bubble: {
     default: [
-      { id: "clarity", label: "Clarity", type: "ai", instruction: "clarity" },
+      { id: "clarity", label: "Rewrite For Clarity", type: "ai", instruction: "clarity" },
       { id: "expand", label: "Expand", type: "ai", instruction: "expand" },
-      { id: "formal", label: "Formal", type: "ai", instruction: "formal" },
+      { id: "formal", label: "Make It Formal", type: "ai", instruction: "formal" },
       { id: "bold", label: "Bold", type: "formatting", command: "bold" },
       { id: "italic", label: "Italic", type: "formatting", command: "italic" },
       { id: "code", label: "Code", type: "formatting", command: "code" },
