@@ -1,0 +1,238 @@
+.patent-editor-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.patent-editor-header {
+  flex: 0 0 auto;
+  max-width: 1100px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1.5rem auto 0;
+  padding: 0 0.25rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  text-align: left;
+}
+
+.patent-editor-header h1 {
+  margin: 0 0 0.4rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111418;
+}
+
+.patent-editor-header p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #52585f;
+}
+
+.patent-editor-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 1100px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1rem auto 0;
+  padding: 1.5rem 3rem;
+  background: #ffffff;
+  border: 1px solid #e2e5ea;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.05);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #1f2328;
+  overflow: hidden;
+}
+
+.patent-editor-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.patent-editor-wrapper .tiptap {
+  min-height: 100%;
+  outline: none;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.patent-editor-wrapper .tiptap:focus {
+  outline: none;
+}
+
+.patent-editor-wrapper .tiptap p {
+  margin: 0 0 1em;
+}
+
+.patent-editor-wrapper .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9aa1ab;
+  pointer-events: none;
+  height: 0;
+}
+
+.patent-editor-wrapper .tiptap h1,
+.patent-editor-wrapper .tiptap h2,
+.patent-editor-wrapper .tiptap h3 {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  color: #111418;
+  line-height: 1.25;
+  margin: 1.6em 0 0.6em;
+}
+
+.patent-editor-wrapper .tiptap h1 { font-size: 1.9rem; }
+.patent-editor-wrapper .tiptap h2 { font-size: 1.5rem; }
+.patent-editor-wrapper .tiptap h3 { font-size: 1.2rem; }
+
+.patent-editor-wrapper .tiptap ul,
+.patent-editor-wrapper .tiptap ol {
+  padding-left: 1.4rem;
+  margin: 0 0 1em;
+}
+
+.patent-editor-wrapper .tiptap li {
+  margin: 0.3em 0;
+}
+
+.patent-editor-wrapper .tiptap blockquote {
+  border-left: 3px solid #d7dbe0;
+  margin: 1.2em 0;
+  padding: 0.2em 1em;
+  color: #52585f;
+  font-style: italic;
+}
+
+.patent-editor-wrapper .tiptap code {
+  background: #f1f3f5;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.9em;
+  color: #d6336c;
+}
+
+.patent-editor-wrapper .tiptap pre {
+  background: #1e1f22;
+  color: #f4f4f5;
+  border-radius: 8px;
+  padding: 0.9em 1.1em;
+  overflow-x: auto;
+  margin: 1.2em 0;
+}
+
+.patent-editor-wrapper .tiptap pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 0.85em;
+}
+
+.patent-editor-wrapper .tiptap hr {
+  border: none;
+  border-top: 1px solid #e2e5ea;
+  margin: 2em 0;
+}
+
+.patent-editor-menu {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  background: #1e1f22;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.85rem;
+  color: #f4f4f5;
+}
+
+.patent-editor-menu button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  padding: 0.35rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.patent-editor-menu button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.patent-editor-menu button.is-active {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.patent-ai-input-box {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 1100px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1rem auto 1.25rem;
+  padding: 0.9rem 1.1rem;
+  background: #ffffff;
+  border: 1px solid #e2e5ea;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.05);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.patent-ai-input-box input {
+  flex: 1;
+  border: 1px solid #d7dbe0;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  outline: none;
+  color: #1f2328;
+  transition: border-color 0.15s ease;
+}
+
+.patent-ai-input-box input:focus {
+  border-color: #3b82f6;
+}
+
+.patent-ai-input-box input::placeholder {
+  color: #9aa1ab;
+}
+
+.patent-ai-input-box button {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.patent-ai-input-box button:hover {
+  background: #2563eb;
+}
+
+.patent-ai-input-box button:disabled {
+  background: #c3cad4;
+  color: #f0f2f5;
+  cursor: not-allowed;
+}
+
+.patent-ai-input-box button:disabled:hover {
+  background: #c3cad4;
+}
