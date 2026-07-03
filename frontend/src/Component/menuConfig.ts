@@ -1,9 +1,11 @@
+import type { Level } from "@tiptap/extension-heading";
+
 export interface MenuItem {
   id: string;
   label: string;
   type: "formatting" | "ai" | "action";
   command?: string;
-  level?: number;
+  level?: Level;
   instruction?: string;
 }
 

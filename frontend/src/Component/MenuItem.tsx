@@ -36,7 +36,9 @@ const MenuItem = ({
 function executeFormattingCommand(editor: Editor, item: IMenuItem) {
   switch (item.command) {
     case "heading":
-      editor.chain().focus().toggleHeading({ level: item.level }).run();
+      if (item.level) {
+        editor.chain().focus().toggleHeading({ level: item.level }).run();
+      }
       break;
     case "bold":
       editor.chain().focus().toggleBold().run();
