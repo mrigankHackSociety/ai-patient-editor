@@ -1,12 +1,17 @@
 import type { Level } from "@tiptap/extension-heading";
 
+export type PatentInstruction = "clarity" | "expand" | "formal";
+export type SuggestionActionId = "approve" | "reject";
+export type FormattingCommand = "heading" | "bold" | "italic" | "code";
+
 export interface MenuItem {
   id: string;
   label: string;
   type: "formatting" | "ai" | "action";
-  command?: string;
+  command?: FormattingCommand;
   level?: Level;
-  instruction?: string;
+  instruction?: PatentInstruction;
+  actionId?: SuggestionActionId;
 }
 
 export interface MenuConfig {
@@ -32,8 +37,8 @@ export const menuConfig: MenuConfig = {
       { id: "code", label: "Code", type: "formatting", command: "code" },
     ],
     suggestion: [
-      { id: "approve", label: "Approve", type: "action" },
-      { id: "reject", label: "Reject", type: "action" },
+      { id: "approve", label: "Approve", type: "action", actionId: "approve" },
+      { id: "reject", label: "Reject", type: "action", actionId: "reject" },
     ],
   },
 };

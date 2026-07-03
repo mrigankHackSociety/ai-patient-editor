@@ -4,7 +4,8 @@ from fastapi import APIRouter, HTTPException
 from google import genai
 
 from config import settings
-from schema.schema import UserPatentInteraction
+from prompts import ai_patent_prompts
+from schema.schema import UserPatentInteraction, PatentInteractionResponse
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ patent_prompts = {
 
 router = APIRouter(prefix='/ai-patent')
 
-@router.post('/patent-interaction-text')
+@router.post('/patent-interaction-text', response_model=PatentInteractionResponse)
 def generate_text(user_interaction_payload: UserPatentInteraction):
     instruction = user_interaction_payload.instruction
 
@@ -35,19 +36,7 @@ def generate_text(user_interaction_payload: UserPatentInteraction):
                 detail="Either an instruction or userInteraction is required",
             )
 
-    combined_input = f"""--- START OF EDITOR DATA ---
- {user_interaction_payload.editorData}
---- END OF EDITOR DATA ---
-
-INSTRUCTION: Based on the data provided above, please execute the following request:
- {prompt}
-
-STRICT OUTPUT RULES:
-1. Return ONLY the final processed text.
-2. Do NOT include the "--- START OF EDITOR DATA ---" or "--- END OF EDITOR DATA ---" delimiters in your response.
-3. Do NOT include any conversational preamble, explanations, or introductory text (e.g., do not say "Here is the text:").
-4. Provide the raw text output directly.
-"""
+    combined_input = ai_patent_prompts(user_interaction_payload, prompt)
 
     try:
         interaction = client.interactions.create(
@@ -58,4 +47,4 @@ STRICT OUTPUT RULES:
         logger.exception("LLM interaction failed")
         raise HTTPException(status_code=502, detail="Failed to generate text")
 
-    return {"success": True, "data": interaction}
+    return {"success": True, "data": interaction.output_text}

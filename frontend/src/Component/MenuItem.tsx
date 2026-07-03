@@ -1,11 +1,16 @@
 import { Editor } from "@tiptap/react";
-import type { MenuItem as IMenuItem } from "./menuConfig";
+import type {
+  MenuItem as IMenuItem,
+  FormattingCommand,
+  PatentInstruction,
+  SuggestionActionId,
+} from "./menuConfig";
 
 interface MenuItemProps {
   item: IMenuItem;
   editor: Editor | null;
-  onAiAction?: (instruction: string) => void;
-  onAction?: (actionId: string) => void;
+  onAiAction?: (instruction: PatentInstruction) => void;
+  onAction?: (actionId: SuggestionActionId) => void;
 }
 
 const MenuItem = ({
@@ -17,14 +22,17 @@ const MenuItem = ({
   const handleClick = () => {
     if (item.type === "ai" && item.instruction && onAiAction) {
       onAiAction(item.instruction);
-    } else if (item.type === "action" && onAction) {
-      onAction(item.id);
+    } else if (item.type === "action" && item.actionId && onAction) {
+      onAction(item.actionId);
     } else if (item.type === "formatting" && editor && item.command) {
-      executeFormattingCommand(editor, item);
+      formattingCommands[item.command].execute(editor, item);
     }
   };
 
-  const isActive = getIsActive(editor, item);
+  const isActive =
+    editor && item.command
+      ? formattingCommands[item.command].isActive(editor, item)
+      : false;
 
   return (
     <button onClick={handleClick} className={isActive ? "is-active" : ""}>
@@ -33,40 +41,33 @@ const MenuItem = ({
   );
 };
 
-function executeFormattingCommand(editor: Editor, item: IMenuItem) {
-  switch (item.command) {
-    case "heading":
+const formattingCommands: Record<
+  FormattingCommand,
+  {
+    execute: (editor: Editor, item: IMenuItem) => void;
+    isActive: (editor: Editor, item: IMenuItem) => boolean;
+  }
+> = {
+  heading: {
+    execute: (editor, item) => {
       if (item.level) {
         editor.chain().focus().toggleHeading({ level: item.level }).run();
       }
-      break;
-    case "bold":
-      editor.chain().focus().toggleBold().run();
-      break;
-    case "italic":
-      editor.chain().focus().toggleItalic().run();
-      break;
-    case "code":
-      editor.chain().focus().toggleCode().run();
-      break;
-  }
-}
-
-function getIsActive(editor: Editor | null, item: IMenuItem): boolean {
-  if (!editor) return false;
-
-  switch (item.command) {
-    case "heading":
-      return editor.isActive("heading", { level: item.level });
-    case "bold":
-      return editor.isActive("bold");
-    case "italic":
-      return editor.isActive("italic");
-    case "code":
-      return editor.isActive("code");
-    default:
-      return false;
-  }
-}
+    },
+    isActive: (editor, item) => editor.isActive("heading", { level: item.level }),
+  },
+  bold: {
+    execute: (editor) => editor.chain().focus().toggleBold().run(),
+    isActive: (editor) => editor.isActive("bold"),
+  },
+  italic: {
+    execute: (editor) => editor.chain().focus().toggleItalic().run(),
+    isActive: (editor) => editor.isActive("italic"),
+  },
+  code: {
+    execute: (editor) => editor.chain().focus().toggleCode().run(),
+    isActive: (editor) => editor.isActive("code"),
+  },
+};
 
 export default MenuItem;

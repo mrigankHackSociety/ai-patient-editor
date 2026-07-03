@@ -7,9 +7,10 @@ import Snackbar from "@mui/material/Snackbar";
 import "./AIPatentEditor.css";
 import { useState } from "react";
 import axiosClient from "../api/axiosClient";
+import type { PatentInteractionResponse } from "../api/types";
 import Loader from "./Loader";
 import MenuItem from "./MenuItem";
-import { menuConfig } from "./menuConfig";
+import { menuConfig, type PatentInstruction, type SuggestionActionId } from "./menuConfig";
 
 const AIPatentEditor = () => {
   const [userEditorInput, setUserEditorInput] = useState<string>("");
@@ -52,7 +53,7 @@ const AIPatentEditor = () => {
     },
   });
 
-  function aiVersionAction(actionId: string) {
+  function aiVersionAction(actionId: SuggestionActionId) {
     if (!editor) return;
     const { from, to } = selectedTextCordinates;
     const replacementText = actionId === "approve" ? outputTxt : oldText;
@@ -108,7 +109,7 @@ const AIPatentEditor = () => {
     setAiSuggestionRequested(true);
   }
 
-  function generatePatient(instruction: string = "") {
+  function generatePatient(instruction: PatentInstruction | "" = "") {
     if (!editor) return;
     setLoading(true);
     const patientPayload = {
@@ -117,12 +118,15 @@ const AIPatentEditor = () => {
       ...(!instruction && { userInteraction: userInstructionsInput }),
     };
     axiosClient
-      .post("/ai-patent/patent-interaction-text", patientPayload)
+      .post<PatentInteractionResponse>(
+        "/ai-patent/patent-interaction-text",
+        patientPayload,
+      )
       .then(({ data }) => {
         if (instruction) {
-          replacePatentContent(data?.data?.output_text);
+          replacePatentContent(data.data);
         } else {
-          editor.chain().insertContent(data?.data?.output_text).run();
+          editor.chain().insertContent(data.data).run();
           setUserInstructionsInput("");
         }
       })
@@ -193,6 +197,7 @@ const AIPatentEditor = () => {
         <input
           type="text"
           placeholder="Tell AI what else needs to be changed"
+          value={userInstructionsInput}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setUserInstructionsInput(e.currentTarget.value)
           }
