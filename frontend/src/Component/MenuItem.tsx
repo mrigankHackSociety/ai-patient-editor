@@ -1,4 +1,6 @@
 import { Editor } from "@tiptap/react";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
+
 import type {
   MenuItem as IMenuItem,
   FormattingCommand,
@@ -36,7 +38,13 @@ const MenuItem = ({
 
   return (
     <button onClick={handleClick} className={isActive ? "is-active" : ""}>
-      {item.label}
+      {item.instruction ? (
+    <>
+      <AutoAwesomeRoundedIcon sx={{ height: 13, width:20 }}/> {item.label}
+    </>
+  ) : (
+    item.label
+  )}
     </button>
   );
 };
